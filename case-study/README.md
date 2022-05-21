@@ -21,7 +21,7 @@ kubectl apply -f process-counter/deployment/process-counter-deploy.yaml -n test
 kubectl apply -f autoscaler/kubernetes/ -n test
 ```
 Above includes RBAC rules, sample operator object, operator yaml deployment, and crd 
-
+> NOTE: Run this command twice if the crd resource is not created  (know issue)
 ---
 
 # How long did it take you to solve the exercise?
