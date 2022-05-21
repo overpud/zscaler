@@ -18,7 +18,7 @@ kubectl apply -f process-counter/deployment/process-counter-deploy.yaml -n test
 4) Deploy necessary Kubernetes components for operator
 > **_NOTE:_** I've dockerized this and pushed operator to my public registry ```tahaq7869/zapata-operator-test:0.1```
 ```
-kubectl apply -f autoscaler/kubernetes/*.yaml -n test 
+kubectl apply -f autoscaler/kubernetes/ -n test
 ```
 Above includes RBAC rules, sample operator object, operator yaml deployment, and crd 
 
