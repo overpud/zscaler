@@ -18,10 +18,10 @@ kubectl apply -f process-counter/deployment/process-counter-deploy.yaml -n test
 4) Deploy necessary Kubernetes components for operator
 > **_NOTE:_** I've dockerized this and pushed operator to my public registry ```tahaq7869/zapata-operator-test:0.1```
 ```
-kubectl apply -f autoscaler/kubernetes/*.yaml -n test 
+kubectl apply -f autoscaler/kubernetes/ -n test
 ```
 Above includes RBAC rules, sample operator object, operator yaml deployment, and crd 
-
+> NOTE: Run this command twice if the crd resource is not created  (know issue)
 ---
 
 # How long did it take you to solve the exercise?
@@ -36,6 +36,7 @@ Above includes RBAC rules, sample operator object, operator yaml deployment, and
   * Exception handling can be improve
   * Currently, it's configured for 10 sec and it's hardcoded. Make modification so that it can be defined when zscaler resource is created
   * RBAC rules can be tightened 
+  * Will fail if replicas is 0 initially
 ---
 
 # Which steps took most of the time? Why?
