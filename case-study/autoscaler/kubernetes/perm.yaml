@@ -14,9 +14,9 @@ rules:
   - "extensions"
   - "apps"
   resources:
-  - deployments/scale
   - deployments
   - events
+  - deployments/scale
   verbs:
   - "patch"
   - "list"
