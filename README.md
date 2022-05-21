@@ -1,4 +1,4 @@
-#zscaler
+# zscaler
 
 * How to use your application.
 * How long did it take you to solve the exercise?
