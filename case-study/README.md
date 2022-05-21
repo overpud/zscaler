@@ -36,6 +36,7 @@ Above includes RBAC rules, sample operator object, operator yaml deployment, and
   * Exception handling can be improve
   * Currently, it's configured for 10 sec and it's hardcoded. Make modification so that it can be defined when zscaler resource is created
   * RBAC rules can be tightened 
+  * Will fail if replicas is 0 initially
 ---
 
 # Which steps took most of the time? Why?
