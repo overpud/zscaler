@@ -1,0 +1,30 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: zscaler.zapata.test.com
+spec:
+  group: zapata.test.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          required: ["spec"]
+          properties:
+            spec:
+              type: object
+              required: ["deploymentName","serviceName"]
+              properties:
+                deploymentName:
+                  type: string
+                serviceName:
+                  type: string
+  scope: Namespaced
+  names:
+    plural: zscaler
+    singular: zscaler
+    kind: zscaler
+    shortNames:
+    - zs

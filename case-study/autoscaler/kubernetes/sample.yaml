@@ -1,0 +1,7 @@
+apiVersion: zapata.test.com/v1
+kind: zscaler
+metadata:
+  name: sample2
+spec:
+  deploymentName: nginx-deployment
+  serviceName: pcd-service 

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zapata-operator
+  labels:
+    app: zapata-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zapata-operator
+  template:
+    metadata:
+      labels:
+        app: zapata-operator
+    spec:
+      serviceAccountName: zapata-operator
+      containers:
+      - name: zapata-operator
+        image: tahaq7869/zapata-operator-test:0.1
+        imagePullPolicy: Always
+
