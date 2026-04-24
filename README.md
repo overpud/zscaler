@@ -155,9 +155,3 @@ kubectl get zscalers -n zscaler-demo -o yaml
 kubectl logs -n zscaler-demo deploy/zscaler-operator
 kubectl scale deploy nginx-deployment -n zscaler-demo --replicas=0
 ```
-
-## Resume Bullet
-
-Built a Kubernetes custom autoscaler operator in Python using Kopf,
-CustomResourceDefinitions, least-privilege RBAC, hardened containers, and
-unit-tested scaling logic to scale workloads from external request metrics.
