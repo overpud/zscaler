@@ -14,14 +14,44 @@ spec:
       labels:
         app: pcd
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
-      - name: pcd
-        image: tahaq7869/zapata-test:0.1
-        ports:
-        - containerPort: 8888
-
---- 
-
+        - name: pcd
+          image: process-counter:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8888
+          readinessProbe:
+            httpGet:
+              path: /api/requestscount
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/requestscount
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -30,6 +60,7 @@ spec:
   selector:
     app: pcd
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 8888
-      targetPort: 8888
+      targetPort: http

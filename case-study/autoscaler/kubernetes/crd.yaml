@@ -1,30 +1,66 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: zscaler.zapata.test.com
+  name: zscalers.zapata.test.com
 spec:
   group: zapata.test.com
+  scope: Namespaced
+  names:
+    plural: zscalers
+    singular: zscaler
+    kind: ZScaler
+    shortNames:
+      - zs
   versions:
     - name: v1
       served: true
       storage: true
+      additionalPrinterColumns:
+        - name: Target
+          type: integer
+          jsonPath: .status.targetReplicas
+        - name: Current
+          type: integer
+          jsonPath: .status.currentReplicas
+        - name: Last Decision
+          type: string
+          jsonPath: .status.lastDecision
       schema:
         openAPIV3Schema:
           type: object
-          required: ["spec"]
+          required:
+            - spec
           properties:
             spec:
               type: object
-              required: ["deploymentName","serviceName"]
+              required:
+                - deploymentName
+                - serviceName
               properties:
                 deploymentName:
                   type: string
+                  minLength: 1
                 serviceName:
                   type: string
-  scope: Namespaced
-  names:
-    plural: zscaler
-    singular: zscaler
-    kind: zscaler
-    shortNames:
-    - zs
+                  minLength: 1
+                minReplicas:
+                  type: integer
+                  minimum: 1
+                  default: 1
+                maxReplicas:
+                  type: integer
+                  minimum: 1
+                  default: 4
+                scaleUpThreshold:
+                  type: integer
+                  minimum: 1
+                  default: 50
+                scaleDownThreshold:
+                  type: integer
+                  minimum: 0
+                  default: 20
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+      subresources:
+        status: {}

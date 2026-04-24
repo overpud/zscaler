@@ -1,29 +1,30 @@
-from kubernetes import config
-from kubernetes import client
 import os
-import json
+
+from kubernetes import client
+from kubernetes import config
+
+
 def load_kube_credentials():
-    DEV = os.getenv('DEV')
-    if DEV:
-        print ("Loading from local kube config")
+    if os.getenv("DEV"):
+        print("Loading from local kube config")
         home = os.path.expanduser("~")
-        kube_config_path = os.getenv("KUBE_CONFIG", home+"/.kube/config")
+        kube_config_path = os.getenv("KUBE_CONFIG", home + "/.kube/config")
         config.load_kube_config(config_file=kube_config_path)
     else:
-        print ("Loading In-cluster config")
+        print("Loading in-cluster config")
         config.load_incluster_config()
 
 
-def scale_deployment(deployment_name,namespace,replicas):
+def scale_deployment(deployment_name, namespace, replicas):
     v1 = client.AppsV1Api()
-    d={"spec": {"replicas": 0}}
-    d['spec']['replicas']=replicas
-    ret=v1.patch_namespaced_deployment_scale(deployment_name, namespace,d)
+    body = {"spec": {"replicas": int(replicas)}}
+    return v1.patch_namespaced_deployment_scale(deployment_name, namespace, body)
 
-def check_replicas(deployment_name,namespace):
+
+def check_replicas(deployment_name, namespace):
     v1 = client.AppsV1Api()
-    ret=v1.read_namespaced_deployment(name=deployment_name,namespace=namespace)
-    return ret.spec.replicas
-    
-
-
+    deployment = v1.read_namespaced_deployment(
+        name=deployment_name,
+        namespace=namespace,
+    )
+    return deployment.spec.replicas or 0

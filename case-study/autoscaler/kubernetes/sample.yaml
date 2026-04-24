@@ -1,8 +1,11 @@
 apiVersion: zapata.test.com/v1
-kind: zscaler
+kind: ZScaler
 metadata:
-  name: sample2
-  namespace: test
+  name: nginx-request-autoscaler
 spec:
   deploymentName: nginx-deployment
-  serviceName: pcd-service 
+  serviceName: pcd-service
+  minReplicas: 1
+  maxReplicas: 4
+  scaleUpThreshold: 50
+  scaleDownThreshold: 20

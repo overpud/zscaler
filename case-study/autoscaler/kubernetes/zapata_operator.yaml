@@ -1,22 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zapata-operator
+  name: zscaler-operator
   labels:
-    app: zapata-operator
+    app: zscaler-operator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: zapata-operator
+      app: zscaler-operator
   template:
     metadata:
       labels:
-        app: zapata-operator
+        app: zscaler-operator
     spec:
-      serviceAccountName: zapata-operator
+      serviceAccountName: zscaler-operator
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
-      - name: zapata-operator
-        image: tahaq7869/zapata-operator-test:0.1
-        imagePullPolicy: Always
-
+        - name: zscaler-operator
+          image: zscaler-operator:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: LOG_LEVEL
+              value: INFO
+            - name: ZSCALE_REQUEST_TIMEOUT_SECONDS
+              value: "3"
+            - name: ZSCALE_TIMER_INTERVAL_SECONDS
+              value: "10"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
